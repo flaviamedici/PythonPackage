@@ -1,4 +1,4 @@
-import invoice
+from invoicing import invoice
 
 invoice.generate("invoices", "output", "pythonhow.png",
                  "product_id", "product_name", "amount_purchased",
