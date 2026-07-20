@@ -162,6 +162,22 @@ The `generate()` function performs the following steps:
 * **pathlib** – Handles file paths.
 * **os** – Creates output directories.
 
+### Upload as a Python package
+Remove files/folders:
+- invoice folder
+- main.py file
+- pythonhow.png
+- Create a new user account in pypi.org
+
+After adding the setup.py file
+- Install setuptool package
+> python setup.py sdist
+> pip install twine
+> twine upload --skip-existing dist/*
+> Enter username and password
+> pip install <name-of-the-package>
+
+
 ## Future Improvements
 
 * Support multiple worksheet names
