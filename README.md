@@ -1,28 +1,23 @@
 # Invoice Generator
 
-A Python application that automatically converts Excel invoice files into professionally formatted PDF invoices.
+A lightweight Python package that converts Excel invoice files (`.xlsx`) into professionally formatted PDF invoices.
 
-## Overview
+Whether you're automating invoice generation for a small business or learning how to package Python libraries, this project demonstrates how to process Excel files, generate PDFs, and distribute a reusable Python package.
 
-This project reads invoice data from Excel (`.xlsx`) files, formats the information into a clean PDF layout, calculates the invoice total, and adds a company logo to each generated invoice.
-
-It is useful for automating invoice creation and eliminating the need to manually create PDF invoices.
+---
 
 ## Features
 
-* Converts Excel invoices into PDF format
-* Automatically processes multiple Excel files in a folder
-* Displays:
+* 📄 Convert Excel invoices into PDF invoices
+* 📁 Process multiple invoices in a single run
+* 🧾 Automatically calculate invoice totals
+* 🏷️ Display invoice number and invoice date
+* 📦 Generate product tables from Excel data
+* 🖼️ Add company branding with a logo
+* 📂 Automatically create the output directory
+* 📚 Can be used as a standalone application or installed as a Python package
 
-  * Invoice number
-  * Invoice date
-  * Product details
-  * Quantity purchased
-  * Price per unit
-  * Total price
-* Calculates the total invoice amount automatically
-* Adds a company logo to the invoice
-* Creates the output directory automatically if it doesn't exist
+---
 
 ## Project Structure
 
@@ -43,27 +38,38 @@ project/
 │
 ├── pythonhow.png
 ├── main.py
+├── setup.py
 └── README.md
 ```
 
+---
+
 ## Requirements
 
-* Python 3.9+
+* Python 3.8+
 * pandas
 * openpyxl
 * fpdf
 
-Install the required packages:
+Install the dependencies:
 
 ```bash
 pip install pandas openpyxl fpdf
 ```
 
+or install directly from the package after publishing:
+
+```bash
+pip install invoicing
+```
+
+---
+
 ## Excel File Format
 
-Each invoice should be stored as an Excel file inside the `invoices` folder.
+The application expects invoice files inside an `invoices` directory.
 
-The filename should follow this format:
+Each filename should follow the format:
 
 ```text
 invoiceNumber-date.xlsx
@@ -75,13 +81,13 @@ Example:
 10001-2025.07.15.xlsx
 ```
 
-The workbook should contain a worksheet named:
+The workbook must contain a worksheet named:
 
 ```text
 Sheet 1
 ```
 
-The worksheet must contain the following columns:
+### Required Columns
 
 | Column           |
 | ---------------- |
@@ -98,7 +104,9 @@ Example:
 | 101        | Keyboard     | 2                | 45             | 90          |
 | 102        | Mouse        | 1                | 25             | 25          |
 
-## Usage
+---
+
+# Using the Project
 
 Run the application:
 
@@ -106,7 +114,7 @@ Run the application:
 python main.py
 ```
 
-`main.py` calls the invoice generator:
+The application calls:
 
 ```python
 from invoicing import invoice
@@ -123,72 +131,173 @@ invoice.generate(
 )
 ```
 
-The script will:
+---
 
-1. Search the `invoices` folder for all Excel files.
-2. Read each invoice.
-3. Generate a formatted PDF.
-4. Save the PDF inside the `output` directory.
+## Function Parameters
 
-## Generated PDF
+The `generate()` function accepts the following parameters:
 
-Each PDF contains:
+| Parameter          | Description                           |
+| ------------------ | ------------------------------------- |
+| `invoices_path`    | Directory containing Excel invoices   |
+| `pdfs_path`        | Output directory for generated PDFs   |
+| `image_path`       | Company logo displayed on the invoice |
+| `product_id`       | Excel column containing product IDs   |
+| `product_name`     | Excel column containing product names |
+| `amount_purchased` | Excel column containing quantities    |
+| `price_per_unit`   | Excel column containing unit prices   |
+| `total_price`      | Excel column containing total prices  |
+
+---
+
+## Example Output
+
+Each generated PDF contains:
 
 * Invoice number
 * Invoice date
 * Product table
-* Total amount
+* Total invoice amount
 * Company name
 * Company logo
 
+The PDFs are automatically saved inside the output directory.
+
+---
+
 ## How It Works
 
-The `generate()` function performs the following steps:
+The package performs the following steps:
 
-1. Finds every Excel invoice using `glob`.
-2. Reads invoice data with **pandas**.
-3. Creates a PDF using **FPDF**.
-4. Builds a table from the Excel data.
+1. Searches the invoice directory for all Excel files.
+2. Reads each invoice using **pandas**.
+3. Creates a new PDF using **FPDF**.
+4. Builds a formatted invoice table.
 5. Calculates the invoice total.
-6. Adds branding (company name and logo).
-7. Saves the completed PDF in the output folder.
+6. Adds company branding.
+7. Exports the invoice as a PDF.
+
+---
 
 ## Dependencies
 
-* **pandas** – Reads Excel files.
-* **openpyxl** – Excel engine used by pandas.
-* **FPDF** – Creates PDF documents.
-* **glob** – Locates invoice files.
-* **pathlib** – Handles file paths.
-* **os** – Creates output directories.
+| Library  | Purpose                     |
+| -------- | --------------------------- |
+| pandas   | Read Excel spreadsheets     |
+| openpyxl | Excel engine used by pandas |
+| FPDF     | Generate PDF documents      |
+| glob     | Locate invoice files        |
+| pathlib  | Handle file paths           |
+| os       | Create output directories   |
 
-### Upload as a Python package
-Remove files/folders:
-- invoice folder
-- main.py file
-- pythonhow.png
-- Create a new user account in pypi.org
+---
 
-After adding the setup.py file
-- Install setuptool package
-> python setup.py sdist
-> pip install twine
-> twine upload --skip-existing dist/*
-> Enter username and password
-> pip install <name-of-the-package>
+# Packaging for PyPI
 
+This project is structured as a reusable Python package and can be published to PyPI.
+
+## Before Publishing
+
+Remove the following files and folders from the package:
+
+* `invoices/`
+* `output/`
+* `main.py`
+* `pythonhow.png`
+
+These files are only needed for the example application.
+
+---
+
+## Create a PyPI Account
+
+Create an account at:
+
+https://pypi.org/
+
+---
+
+## Build the Package
+
+Install setuptools if needed:
+
+```bash
+pip install setuptools
+```
+
+Build the distribution:
+
+```bash
+python setup.py sdist
+```
+
+A `dist/` folder will be created containing the source distribution.
+
+---
+
+## Upload to PyPI
+
+Install Twine:
+
+```bash
+pip install twine
+```
+
+Upload the package:
+
+```bash
+twine upload --skip-existing dist/*
+```
+
+You'll be prompted for your PyPI username and password.
+
+---
+
+## Install Your Package
+
+Once published, anyone can install the package using:
+
+```bash
+pip install <package-name>
+```
+
+Example:
+
+```bash
+pip install invoicing
+```
+
+---
+
+## Supported Python Versions
+
+According to the package configuration, this library supports:
+
+* Python 3.8
+* Python 3.9
+* Python 3.10
+* Python 3.11
+
+---
 
 ## Future Improvements
 
 * Support multiple worksheet names
-* Add currency formatting
-* Customize fonts and colors
-* Email generated invoices automatically
-* Add customer information section
-* Generate invoice summaries
-* Support multiple company logos
-* Export to additional formats
+* Currency formatting
+* Multiple page invoices
+* Customer and billing information
+* Invoice templates
+* Automatic invoice numbering
+* Email generated invoices
+* QR code support
+* Barcode support
+* Custom fonts and themes
+* Export to additional file formats
+
+---
 
 ## License
 
-This project is available for educational and personal use.
+This project is licensed under the **MIT License**.
+
+See the `LICENSE` file for more information.
